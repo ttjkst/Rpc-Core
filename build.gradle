@@ -1,0 +1,28 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.6.RELEASE'
+    id 'java'
+    id 'war'
+}
+group 'ttjkst'
+version '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    // https://mvnrepository.com/artifact/cglib/cglib-nodep
+    compile group: 'cglib', name: 'cglib-nodep', version: '3.2.5'
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '21.0'
+    // https://mvnrepository.com/artifact/com.alibaba/fastjson
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.32'
+    // https://mvnrepository.com/artifact/com.caucho/hessian
+    compile group: 'com.caucho', name: 'hessian', version: '4.0.7'
+
+}
