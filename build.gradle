@@ -24,5 +24,8 @@ dependencies {
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.32'
     // https://mvnrepository.com/artifact/com.caucho/hessian
     compile group: 'com.caucho', name: 'hessian', version: '4.0.7'
+    compile("org.apache.tomcat.embed:tomcat-embed-core:8.0.9")
+    compile("org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.9")
+    compile("org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.0.9")
 
 }

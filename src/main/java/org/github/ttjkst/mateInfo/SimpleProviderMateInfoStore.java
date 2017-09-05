@@ -10,10 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by ttjkst on 2017/9/4.
  */
-public class SimpleConnectorMateInfoStore implements ConnectorMateInfoSource{
+public class SimpleProviderMateInfoStore implements PrvoiderMateInfoStore{
     private Map<String,ConnectorMateInfo> map = new ConcurrentHashMap<>();
 
-    private static ConnectorMateInfoSource source = new SimpleConnectorMateInfoStore();
+    private static PrvoiderMateInfoStore prvoiderMateInfoStore = new SimpleProviderMateInfoStore();
 
     @Override
     public boolean store(ConnectorMateInfo mateInfo) {
@@ -53,7 +53,7 @@ public class SimpleConnectorMateInfoStore implements ConnectorMateInfoSource{
     }
 
     @Override
-    public ConnectorMateInfoSource build() {
-        return source;
+    public PrvoiderMateInfoStore build() {
+        return prvoiderMateInfoStore;
     }
 }

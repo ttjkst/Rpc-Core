@@ -3,18 +3,11 @@ package org.github.ttjkst.mateInfo;
 /**
  * Created by ttjkst on 2017/9/4.
  */
-public class ConnectorMateInfo {
+public class ProviderMateInfo {
     private String name;
     private String version;
     private Class  clazz;
-    private int    timeout = 1000;
 
-    public ConnectorMateInfo(String name, String version, Class clazz, int timeout) {
-        this.name = name;
-        this.version = version;
-        this.clazz = clazz;
-        this.timeout = timeout;
-    }
 
     public String getName() {
         return name;
@@ -40,11 +33,9 @@ public class ConnectorMateInfo {
         this.clazz = clazz;
     }
 
-    public int getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
+    public ProviderMateInfo(String name, String version, Class clazz) {
+        this.name = name;
+        this.version = version;
+        this.clazz = clazz;
     }
 }
