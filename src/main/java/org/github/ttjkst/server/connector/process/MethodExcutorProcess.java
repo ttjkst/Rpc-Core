@@ -1,4 +1,4 @@
-package org.github.ttjkst.server.customer.process;
+package org.github.ttjkst.server.connector.process;
 
 import org.github.ttjkst.packages.MessagePackage;
 

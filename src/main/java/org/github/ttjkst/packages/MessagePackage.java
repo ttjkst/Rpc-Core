@@ -1,6 +1,7 @@
 package org.github.ttjkst.packages;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,5 +25,13 @@ public class MessagePackage implements Serializable{
 
     public void setTypes(Class[] types) {
         this.types = types;
+    }
+
+    @Override
+    public String toString() {
+        return "MessagePackage{" +
+                "values=" + Arrays.toString(values) +
+                ", types=" + Arrays.toString(types) +
+                '}';
     }
 }

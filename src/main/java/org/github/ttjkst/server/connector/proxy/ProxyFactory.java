@@ -1,4 +1,4 @@
-package org.github.ttjkst.server.customer.proxy;
+package org.github.ttjkst.server.connector.proxy;
 
 /**
  * Created by ttjkst on 2017/9/5.

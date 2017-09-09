@@ -1,5 +1,6 @@
-package org.github.ttjkst.Boot;
+package org.github.ttjkst.boot;
 
+import org.github.ttjkst.server.spring.annotation.EnableServerProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableAutoConfiguration
 @SpringBootApplication
+@EnableServerProvider(basePackages={"org.github.ttjkst.*"})
 @ComponentScan("org.github.ttjkst.*")
 public class BootStart {
     public static void main(String... args){

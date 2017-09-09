@@ -1,6 +1,6 @@
-package org.github.ttjkst.server.customer.proxy.JDK;
+package org.github.ttjkst.server.connector.proxy.JDK;
 
-import org.github.ttjkst.server.customer.proxy.ProxyFactory;
+import org.github.ttjkst.server.connector.proxy.ProxyFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -10,14 +10,18 @@ import java.lang.reflect.Proxy;
  */
 public class ProxyJdkFactory implements ProxyFactory{
 
-    public static ProxyJdkFactory proxyJdkFactory = null;
-    public  static InvocationHandler handler;
+    private   static ProxyJdkFactory proxyJdkFactory = null;
+    private   static InvocationHandler handler       = null;
     private  ProxyJdkFactory(){
 
     };
 
+    public static ProxyJdkFactory setHandler(InvocationHandler handler) {
+        ProxyJdkFactory.handler = handler;
+        return proxyJdkFactory;
+    }
 
-    public ProxyJdkFactory build() {
+    public static ProxyJdkFactory build() {
         if(proxyJdkFactory==null){
             proxyJdkFactory = new ProxyJdkFactory();
         }

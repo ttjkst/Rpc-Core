@@ -8,6 +8,6 @@ public interface ConnectorMateInfoSource {
     boolean hasMate(ConnectorMateInfo mateInfo);
     void delete(ConnectorMateInfo mateInfo);
     void changeMateInfoByName(ConnectorMateInfo mateInfo);
-    ConnectorMateInfo findByClass(Class clazz);
+    ConnectorMateInfo findByMateInfo(ConnectorMateInfo mateInfo);
     ConnectorMateInfoSource build();
 }

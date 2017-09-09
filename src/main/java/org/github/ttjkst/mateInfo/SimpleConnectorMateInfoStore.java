@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by ttjkst on 2017/9/4.
  */
 public class SimpleConnectorMateInfoStore implements ConnectorMateInfoSource{
-    private Map<String,ConnectorMateInfo> map = new ConcurrentHashMap<>();
+    private Map<Integer,ConnectorMateInfo> map = new ConcurrentHashMap<>();
 
     private static ConnectorMateInfoSource source = new SimpleConnectorMateInfoStore();
 
@@ -20,36 +20,29 @@ public class SimpleConnectorMateInfoStore implements ConnectorMateInfoSource{
         if(Objects.isNull(mateInfo)||hasMate(mateInfo)){
             return false;
         }
-        map.put(getName(mateInfo),mateInfo);
+        map.put(mateInfo.hashCode(),mateInfo);
         return true;
-    }
-
-    private String getName(ConnectorMateInfo info){
-        return Strings.isNullOrEmpty(info.getName())?info.getClazz().getName():info.getName();
     }
     @Override
     public boolean hasMate(ConnectorMateInfo mateInfo) {
 
-        return map.containsKey(getName(mateInfo));
+        return map.containsKey(mateInfo.hashCode());
     }
 
     @Override
     public void delete(ConnectorMateInfo mateInfo) {
-            map.remove(getName(mateInfo));
+            map.remove(mateInfo.hashCode());
     }
 
     @Override
     public void changeMateInfoByName(ConnectorMateInfo mateInfo) {
-            map.put(getName(mateInfo),mateInfo);
+            map.put(mateInfo.hashCode(),mateInfo);
     }
 
+
     @Override
-    public ConnectorMateInfo findByClass(Class clazz) {
-        Optional<Map.Entry<String, ConnectorMateInfo>> first = map.entrySet().stream().filter(x -> x.getValue().getClazz().equals(clazz)).findFirst();
-        if(first.isPresent()){
-            return first.get().getValue();
-        }
-        return null;
+    public ConnectorMateInfo findByMateInfo(ConnectorMateInfo mateInfo) {
+        return map.get(mateInfo.hashCode());
     }
 
     @Override

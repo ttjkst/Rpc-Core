@@ -1,9 +1,9 @@
-package org.github.ttjkst.server.customer.process.Hessian2;
+package org.github.ttjkst.server.connector.process.Hessian2;
 
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import org.github.ttjkst.packages.MessagePackage;
-import org.github.ttjkst.server.customer.process.MethodExcutorProcess;
+import org.github.ttjkst.server.connector.process.MethodExcutorProcess;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
