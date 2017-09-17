@@ -3,6 +3,7 @@ package org.github.ttjkst.mateInfo;
 import org.github.ttjkst.server.connector.annotation.ServerConnector;
 import org.github.ttjkst.server.provider.annotation.ServerProvider;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**
@@ -15,6 +16,10 @@ public abstract class MateInfoUtils {
     }
     public static boolean isProvider(Object o){
         ServerProvider annotation = o.getClass().getAnnotation(ServerProvider.class);
+        return annotation!=null;
+    }
+    public static boolean isProvider(Class<?> clazz){
+        ServerProvider annotation = clazz.getAnnotation(ServerProvider.class);
         return annotation!=null;
     }
 
@@ -31,6 +36,14 @@ public abstract class MateInfoUtils {
         if(isProvider(o)){
             ServerProvider annotation = o.getClass().getAnnotation(ServerProvider.class);
             return new ProviderMateInfo(annotation.name(),annotation.version(),o.getClass());
+        }else{
+            return  null;
+        }
+    }
+    public static ProviderMateInfo parseProvider(Class<?> clazz){
+        if(isProvider(clazz)){
+            ServerProvider annotation = clazz.getAnnotation(ServerProvider.class);
+            return new ProviderMateInfo(annotation.name(),annotation.version(),clazz);
         }else{
             return  null;
         }

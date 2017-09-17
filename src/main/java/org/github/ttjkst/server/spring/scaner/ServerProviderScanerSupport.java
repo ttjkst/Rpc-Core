@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class ServerProviderScanerSupport implements ImportBeanDefinitionRegistrar {
 
-    private static final String BEAN_NAME = "connectorScanerSupport";
+    private static final String BEAN_NAME = "serverProviderScanerSupport";
     @Override
     public void registerBeanDefinitions( AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry ) {
         Set<String> packagesToScan = getPackagesToScan(importingClassMetadata);

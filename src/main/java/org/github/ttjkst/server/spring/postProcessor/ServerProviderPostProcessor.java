@@ -1,5 +1,9 @@
 package org.github.ttjkst.server.spring.postProcessor;
 
+import org.github.ttjkst.mateInfo.MateInfoUtils;
+import org.github.ttjkst.mateInfo.ProviderMateInfo;
+import org.github.ttjkst.mateInfo.PrvoiderMateInfoStore;
+import org.github.ttjkst.mateInfo.SimpleProviderMateInfoStore;
 import org.github.ttjkst.server.provider.annotation.ServerProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
@@ -20,6 +24,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by ttjkst on 2017/9/9.
@@ -29,6 +34,10 @@ public class ServerProviderPostProcessor implements BeanFactoryPostProcessor,App
     private final Set<String> packagesToScan;
 
     private ApplicationContext applicationContext;
+
+    private Map<String,Class> clazzCache = new ConcurrentHashMap<>(256);
+
+    private PrvoiderMateInfoStore prvoiderInfoStore = new SimpleProviderMateInfoStore().build();
 
     public ServerProviderPostProcessor( Set<String> packagesToScan ) {
         this.packagesToScan = packagesToScan;
@@ -55,13 +64,26 @@ public class ServerProviderPostProcessor implements BeanFactoryPostProcessor,App
                 ScannedGenericBeanDefinition candidate = (ScannedGenericBeanDefinition) beanDefinition;
                 Map<String, Object> attributes = candidate.getMetadata().
                         getAnnotationAttributes(ServerProvider.class.getName());
-                String className = candidate.getBeanClassName();
-                Class beanClass = Class.forName(className);
+                Class beanClass = getClass(candidate.getBeanClassName());
+                ProviderMateInfo providerMateInfo = MateInfoUtils.parseProvider(beanClass);
+                if(!prvoiderInfoStore.hasMate(providerMateInfo)){
+                    prvoiderInfoStore.store(providerMateInfo);
+                }
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder
                         .rootBeanDefinition(beanClass);
                 String name = determineName(attributes, candidate);
                 registry.registerBeanDefinition(name, builder.getBeanDefinition());
             }
+        }
+    }
+
+    private  Class getClass(String className) throws ClassNotFoundException{
+        if(clazzCache.containsKey(className)){
+            return clazzCache.get(className);
+        }else {
+            Class beanClass = Class.forName(className);
+            clazzCache.put(className,beanClass);
+            return beanClass;
         }
     }
 
@@ -75,7 +97,7 @@ public class ServerProviderPostProcessor implements BeanFactoryPostProcessor,App
     private String getName(String className){
         String name = UUID.randomUUID().toString();
         try {
-            name = Class.forName(className).getSimpleName();
+            name = getClass(className).getSimpleName();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

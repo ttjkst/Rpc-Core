@@ -1,4 +1,4 @@
-package org.github.ttjkst.beanFactory;
+package org.github.ttjkst.server.spring.postProcessor;
 
 import org.github.ttjkst.mateInfo.ConnectorMateInfo;
 import org.github.ttjkst.mateInfo.ConnectorMateInfoSource;
