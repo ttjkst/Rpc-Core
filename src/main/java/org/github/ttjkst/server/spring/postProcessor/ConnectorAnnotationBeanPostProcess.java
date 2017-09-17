@@ -8,7 +8,9 @@ import org.github.ttjkst.server.connector.proxy.JDK.ProxyJdkFactory;
 import org.github.ttjkst.server.connector.proxy.JDK.RpcInvocationHandler;
 import org.github.ttjkst.server.connector.proxy.ProxyFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.annotation.AliasFor;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -20,7 +22,8 @@ public class ConnectorAnnotationBeanPostProcess implements BeanPostProcessor{
 
     private ConnectorMateInfoSource mateInfoSource = new SimpleConnectorMateInfoStore().build();
 
-    private ProxyFactory proxyFactory = ProxyJdkFactory.setHandler(new RpcInvocationHandler()).build();
+    @Autowired
+    private ProxyFactory proxyFactory;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

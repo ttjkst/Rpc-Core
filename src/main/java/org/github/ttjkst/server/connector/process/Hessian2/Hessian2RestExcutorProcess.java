@@ -40,7 +40,8 @@ public class Hessian2RestExcutorProcess implements MethodExcutorProcess {
         return serverUrl;
     }
 
-    public void setServerUrl(String serverUrl) {
+    public Hessian2RestExcutorProcess setServerUrl(String serverUrl) {
         this.serverUrl = serverUrl;
+        return  this;
     }
 }

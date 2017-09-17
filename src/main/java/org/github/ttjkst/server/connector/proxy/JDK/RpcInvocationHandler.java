@@ -1,7 +1,9 @@
 package org.github.ttjkst.server.connector.proxy.JDK;
 
 
+import com.google.common.base.Strings;
 import org.github.ttjkst.packages.MessagePackage;
+import org.github.ttjkst.server.connector.annotation.ServerConnector;
 import org.github.ttjkst.server.connector.process.MethodExcutorProcess;
 
 import java.lang.reflect.InvocationHandler;
@@ -21,17 +23,17 @@ public class RpcInvocationHandler implements InvocationHandler {
         Class<?> declaringClass     = method.getDeclaringClass();
         args = Objects.isNull(args)?new Object[0]:args;
         Class[]  classes            = Arrays.asList(args).stream().map(Object::getClass).toArray(Class[]::new);
-/*        ServerConnector providerInfo =  declaringClass.getAnnotation(ServerConnector.class);
-        String className = Strings.isNullOrEmpty(providerInfo.name())?declaringClass.getSimpleName():providerInfo.name();*/
+        ServerConnector serverConnectorInfo = declaringClass.getAnnotation(ServerConnector.class);
+        String className = Strings.isNullOrEmpty(serverConnectorInfo.name())?declaringClass.getSimpleName():serverConnectorInfo.name();
         MessagePackage msgPack = new MessagePackage();
         msgPack.setTypes(classes);
         msgPack.setValues(args);
         System.out.println(msgPack);
-        /*return process.excute(msgPack,className,methodName,providerInfo.version(),providerInfo.timeout());*/
-        return null;
+        return process.excute(msgPack,className,methodName,serverConnectorInfo.version(),serverConnectorInfo.timeout());
     }
 
-    public void setProcess(MethodExcutorProcess process) {
+    public RpcInvocationHandler setProcess(MethodExcutorProcess process) {
         this.process = process;
+        return this;
     }
 }

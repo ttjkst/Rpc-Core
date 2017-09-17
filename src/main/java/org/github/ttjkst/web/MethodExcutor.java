@@ -3,8 +3,6 @@ package org.github.ttjkst.web;
 import com.google.common.io.ByteStreams;
 import org.github.ttjkst.packages.MessagePackage;
 import org.github.ttjkst.protocol.ProtocolProcess;
-import org.github.ttjkst.server.connector.annotation.ServerConnector;
-import org.github.ttjkst.service.IHello;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,7 +32,7 @@ public class MethodExcutor implements ApplicationContextAware{
     @Autowired
     public ProtocolProcess process;
     @RequestMapping("/{className}/{methodName}")
-    public ResponseEntity<Object> excute(@PathVariable("className")String className, @PathVariable("methodName")String methodName,HttpServletRequest request) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException,IOException{
+    public void excute( @PathVariable("className")String className, @PathVariable("methodName")String methodName, HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException,IOException{
         Object excuter = applicationContext.getBean(className);
         MessagePackage msgPackage = null;
         try {
@@ -46,13 +46,14 @@ public class MethodExcutor implements ApplicationContextAware{
             }
         }
         Method method = excuter.getClass().getMethod(methodName,msgPackage.getTypes());
-        return new ResponseEntity<Object>(method.invoke(excuter,msgPackage.getValues()),HttpStatus.OK);
+        response.setHeader("content-type","octet-stream");
+        ByteArrayOutputStream byteArrayOutputStream = process.processToBytes(method.invoke(excuter, msgPackage.getValues()));
+        byteArrayOutputStream.writeTo(response.getOutputStream());
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
     }
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        IHello bean = applicationContext.getBean(IHello.class);
-        bean.say();
-        bean.say("11");
         this.applicationContext = applicationContext;
     }
 }
